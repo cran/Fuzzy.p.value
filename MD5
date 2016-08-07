@@ -1,0 +1,16 @@
+f6c637315ffa11393a2039b5702d58b1 *DESCRIPTION
+7fa5a30fd0ec70ad9ca5a9f26fb114e6 *NAMESPACE
+722faf61c4cef8bea390c5b0f2c48511 *R/B.R
+428c6a796ad087fe97d0177188bf8f50 *R/S.R
+ba60aef04fdcf6f8f659b23d91ae9ee9 *R/T.R
+3fe94114b255d7ec3e8facf1981e97b2 *R/Tr.R
+5535b28219c495ba7dffa0079de2ccff *R/p_value.norm.R
+7f48ec74e42716d0ad9312fd015f70fe *R/p_value.pois.R
+441380734b8728dfa7bbde3576ac04a0 *build/partial.rdb
+9c5774ca779b43addf49247f49eb44a2 *man/B.Rd
+a6d382a147e4d9631f6430eda6fbe0fa *man/Fuzzy.p.value-package.Rd
+8e0b47c6e98f629743bf392187ae52c2 *man/S.Rd
+c982b221829a586c69b616dbaacae2de *man/T.Rd
+397ac26451d4912a8c7faa03ad8fb5c6 *man/Tr.Rd
+4ef9222af0ff59d8d288c11c9bf7f167 *man/p_value.norm.Rd
+94dd84dc9d730a0cc351881812538f5f *man/p_value.pois.Rd
