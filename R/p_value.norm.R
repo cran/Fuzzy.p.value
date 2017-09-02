@@ -40,18 +40,39 @@ lines( c(0,s1,s2,s3,s4,1), c(0,0,1,1,0,0), type='l', lty=3, lwd=2, col=2 )
 #plot( sig , lty=3, lwd=2, col=2, add=TRUE )
 legend( "topright", c("Fuzzy p-value", "Significance level"), col = c(1,2), text.col = 1, lwd = c(3,2), lty = c(1,3) )
 
+if( class(sig) == "numeric" ){
+   sig <- TriangularFuzzyNumber(sig, sig, sig)
+   }
 
-Int_1 <- function(delta)   ( alphacut(sig, delta)[,"U"] - p_L[(100*delta)+1] ) * ifelse(  alphacut(sig, delta)[,"U"] - p_L[(100*delta)+1]  >= 0  , 1, 0); 
-Int_2 <- function(delta)   ( alphacut(sig, delta)[,"L"] - p_U[(100*delta)+1] ) * ifelse(  alphacut(sig, delta)[,"L"] - p_U[(100*delta)+1]  >= 0  , 1, 0); 
+P_L = p_L
+P_U = p_U
+knot.n = 100
 
-Delta_SP= area(Int_1, 0, 1)  +  area(Int_2, 0, 1);
+S_L = alphacut(sig, round(seq(0, 1, .01), 5))[,"L"]
+
+S_U = alphacut(sig, round(seq(0, 1, .01), 5))[,"U"]
+
+
+Int1 = ( P_U - S_L ) * ( P_U > S_L )
+Int2 = ( P_L - S_U ) * ( P_L > S_U )
+
+Arz = 1 / (knot.n - 1)  #Arze Mostatilha baraye mohasebe-ye Integral
+
+Integral1 <- ( sum( Int1 ) - Int1[1]/2 - Int1[length(Int1)]/2 ) *Arz
+Integral2 <- ( sum( Int2 ) - Int2[1]/2 - Int2[length(Int2)]/2 ) *Arz
+
+Delta_PS = Integral1 + Integral2
+Int3 = ( S_U - P_L ) * ( S_U > P_L )
+Int4 = ( S_L - P_U ) * ( S_L > P_U )
+
+Integral3 <- ( sum( Int3 ) - Int3[1]/2 - Int3[length(Int3)]/2 ) *Arz
+Integral4 <- ( sum( Int4 ) - Int4[1]/2 - Int4[length(Int4)]/2 ) *Arz
+
+Delta_SP = Integral3 + Integral4
+
 print("Delta_SP = ")
 print(Delta_SP)
 
-Int_3 <- function(delta)   ( p_U[(100*delta)+1]  -  alphacut(sig, delta)[,"L"]  ) * ifelse(  p_U[(100*delta)+1]  -  alphacut(sig, delta)[,"L"]  >= 0  , 1, 0); 
-Int_4 <- function(delta)   ( p_L[(100*delta)+1]  -  alphacut(sig, delta)[,"U"]  ) * ifelse(  p_L[(100*delta)+1]  -  alphacut(sig, delta)[,"U"]  >= 0  , 1, 0); 
-
-Delta_PS= area(Int_3, 0, 1)  +  area(Int_4, 0, 1);
 print("Delta_PS = ")
 print(Delta_PS)
 

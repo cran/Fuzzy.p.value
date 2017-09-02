@@ -11,7 +11,7 @@ Function \code{p_value.norm} can draw the membership function of fuzzy p-value f
 (3) testing fuzzy hypotheses based on fuzzy data.  
 Also, one can consider a fuzzy significance of level for test by function \code{p_value.norm}. 
 It must be noted that function \code{p_value.norm}  is applied when the test statistics has Normal distribution. This idea can be extended for other test statistics which has other continue distribution. 
-All needed formulas are presented in  (Parchami and Mashinchi, 2016) and the considered examples are match with this reference.
+All needed formulas are presented in  Springer chapter book 2016 and the considered examples are match with this reference.
 }
 
 \usage{
@@ -65,8 +65,6 @@ Filzmoser, P., and Viertl, R. (2004). Testing hypotheses with fuzzy data: the fu
 
 Holena, M. (2004). Fuzzy hypotheses testing in a framework of fuzzy logic. Fuzzy Sets and Systems 145: 229-252.
 
-Parchami, A., and Mashinchi, M. (2016). Testing hypotheses based on fuzzy p-value in fuzzy environment, Title of book: Fuzzy Statistical Decision Making: Theory and Applications, C. Kahraman and O. Kabak (eds.), Springer, Accepted.
-
 Parchami, A., Taheri, S. M., and Mashinchi, M. (2010). Fuzzy p-value in testing fuzzy hypotheses with crisp data. Statistical Papers 51: 209-226.
 
 Parchami, A., Taheri, S. M., and Mashinchi, M. (2012). Testing fuzzy hypotheses based on vague observations: a p-value approach. Statistical Papers 53: 469-484.
@@ -80,22 +78,22 @@ Yuan, Y. (1991). Criteria for evaluating fuzzy ranking methods. Fuzzy Sets Syst 
  Abbas Parchami }
 
 \examples{
-# Solving Example 1 from (Parchami and Mashinchi, 2016)
+# Example 1 from Springer chapter book 2016
 p_value.norm( kind=2, H0=T(1300,1300,1300), H1=B(1300,1300), t=T(1288,1313,1331), s.d=30, 
 n=10, sig=T(0,0.05,0.1) )
 
-# Solving Example 2 from (Parchami and Mashinchi, 2016)
+# Solving Example 2 from Springer chapter book 2016
 p_value.norm( kind=0, H0=T(1300,1300,1300), H1=B(1300,1300), t=T(1300,1313,1321), s.d=30, 
 n=10, sig=T(0,0.15,0.3) )
 
-# Solving Example 4 from (Parchami and Mashinchi, 2016)
+# Solving Example 4 from Springer chapter book 2016
 H0 = T(1275,1300,1325) #  Fuzzy null hypothesis
 H1 = B(1275,1325) #  Fuzzy althernative hypothesis
 t = T(1315,1327,1342) #  Fuzzy observed value for the test statistics
 sig = T(0.0,0.15,0.3) #  Fuzzy significance level
 p_value.norm( kind=2, H0, H1, t, s.d=120, n=36, sig)
 
-# Solving Example 6 from (Parchami and Mashinchi, 2016)
+# Solving Example 6 from Springer chapter book 2016
 H0 = T(1275,1300,1325)
 H1 = B(1275,1325)
 t = T(1327,1327,1327) #  Crisp observed value for the test statistics
@@ -150,22 +148,27 @@ function (kind, H0, H1, t, s.d, n, sig)
     legend("topright", c("Fuzzy p-value", "Significance level"), 
         col = c(1, 2), text.col = 1, lwd = c(3, 2), lty = c(1, 
             3))
-    Int_1 <- function(delta) (alphacut(sig, delta)[, "U"] - p_L[(100 * 
-        delta) + 1]) * ifelse(alphacut(sig, delta)[, "U"] - p_L[(100 * 
-        delta) + 1] >= 0, 1, 0)
-    Int_2 <- function(delta) (alphacut(sig, delta)[, "L"] - p_U[(100 * 
-        delta) + 1]) * ifelse(alphacut(sig, delta)[, "L"] - p_U[(100 * 
-        delta) + 1] >= 0, 1, 0)
-    Delta_SP = area(Int_1, 0, 1) + area(Int_2, 0, 1)
+     if( class(sig) == "numeric" ){
+            sig <- TriangularFuzzyNumber(sig, sig, sig)
+            }
+     P_L = p_L
+     P_U = p_U
+     knot.n = 100
+     S_L = alphacut(sig, round(seq(0, 1, .01), 5))[,"L"]
+     S_U = alphacut(sig, round(seq(0, 1, .01), 5))[,"U"]
+     Int1 = ( P_U - S_L ) * ( P_U > S_L )
+     Int2 = ( P_L - S_U ) * ( P_L > S_U )
+     Arz = 1 / (knot.n - 1)  #Arze Mostatilha baraye mohasebe-ye Integral
+     Integral1 <- ( sum( Int1 ) - Int1[1]/2 - Int1[length(Int1)]/2 ) *Arz
+     Integral2 <- ( sum( Int2 ) - Int2[1]/2 - Int2[length(Int2)]/2 ) *Arz
+     Delta_PS = Integral1 + Integral2
+     Int3 = ( S_U - P_L ) * ( S_U > P_L )
+     Int4 = ( S_L - P_U ) * ( S_L > P_U )
+     Integral3 <- ( sum( Int3 ) - Int3[1]/2 - Int3[length(Int3)]/2 ) *Arz
+     Integral4 <- ( sum( Int4 ) - Int4[1]/2 - Int4[length(Int4)]/2 ) *Arz
+     Delta_SP = Integral3 + Integral4
     print("Delta_SP = ")
     print(Delta_SP)
-    Int_3 <- function(delta) (p_U[(100 * delta) + 1] - alphacut(sig, 
-        delta)[, "L"]) * ifelse(p_U[(100 * delta) + 1] - alphacut(sig, 
-        delta)[, "L"] >= 0, 1, 0)
-    Int_4 <- function(delta) (p_L[(100 * delta) + 1] - alphacut(sig, 
-        delta)[, "U"]) * ifelse(p_L[(100 * delta) + 1] - alphacut(sig, 
-        delta)[, "U"] >= 0, 1, 0)
-    Delta_PS = area(Int_3, 0, 1) + area(Int_4, 0, 1)
     print("Delta_PS = ")
     print(Delta_PS)
     Degree_P_biger_than_S = Delta_PS/(Delta_PS + Delta_SP)

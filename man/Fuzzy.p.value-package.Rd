@@ -13,7 +13,7 @@ The vagueness entrance in testing hypotheses problem can be done via data or/and
 (2) testing fuzzy hypotheses based on crisp data, and 
 (3) testing fuzzy hypotheses based on fuzzy data.
 Similar to the classical testing hypotheses, one can consider different procedure methods for solving the above mentioned problems such as Neyman-Pearson, Bayes, likelihood ratio, minimax and p-value. Computing Fuzzy p-Value package, i.e. \code{Fuzzy.p.value} package, is an open source (LGPL 3) package for R which investigate on the above three problems on the basis of fuzzy p-value approach. 
-All formulas and given examples are match with (Parchami and Mashinchi, 2016) to easily show the performance of the proposed methods.
+All formulas and given examples are match with Springer Chapter book (2016) to easily show the performance of the proposed methods.
 }
 
 \details{
@@ -30,8 +30,6 @@ Maintainer: \packageMaintainer{Fuzzy.p.value}
 Filzmoser, P., and Viertl, R. (2004). Testing hypotheses with fuzzy data: the fuzzy p-value. Metrika 59: 21-29.
 
 Holena, M. (2004). Fuzzy hypotheses testing in a framework of fuzzy logic. Fuzzy Sets and Systems 145: 229-252.
-
-Parchami, A., and Mashinchi, M. (2016). Testing hypotheses based on fuzzy p-value in fuzzy environment, Title of book: Fuzzy Statistical Decision Making: Theory and Applications, C. Kahraman and O. Kabak (eds.), Springer, Accepted.
 
 Parchami, A., Taheri, S. M., and Mashinchi, M. (2010). Fuzzy p-value in testing fuzzy hypotheses with crisp data. Statistical Papers 51: 209-226.
 
